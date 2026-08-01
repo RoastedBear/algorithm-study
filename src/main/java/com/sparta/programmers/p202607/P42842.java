@@ -1,4 +1,4 @@
-package com.sparta.programmers;
+package com.sparta.programmers.p202607;
 
 import java.util.Scanner;
 
