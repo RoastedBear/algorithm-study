@@ -9,7 +9,7 @@ public class P120845 {
         for (int i = 0; i < 3; i++) {
             box[i] = sc.nextInt();
         }
-        int n = sc.nextInt();s
+        int n = sc.nextInt();
         int answer = 1;
         for (int i = 0; i < 3; i++) {
             answer *= box[i] / n;
