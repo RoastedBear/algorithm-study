@@ -5,115 +5,118 @@ import java.util.Arrays;
 
 public class p181859 {
     public static void main(String[] args) {
-        int[] arr = {3, 2, 4, 1, 3};
-        boolean[] flag = {true, false, true, false, false};
-        ArrayList<Integer> x = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            if (flag[i]) {
-                for (int j = 0; j < arr[i] * 2; j++) {
-                    x.add(arr[i]);
-                }
+        int[] arr = {0, 1, 1, 1, 0};
+        ArrayList<Integer> stk = new ArrayList<>();
+        for(int i = 0; i < arr.length; i++) {
+            if(stk.size() == 0) {
+                stk.add(arr[i]);
+
+            } else if(stk.get(stk.size() - 1) == arr[i]) {
+                stk.remove(stk.size() - 1);
             } else {
-                for (int j = 0; j < arr[i]; j++) {
-                    x.remove(x.size() - 1);
-                }
+                stk.add(arr[i]);
             }
         }
-        int[] answer = new int[x.size()];
-        for (int i = 0;i<x.size(); i++) {
-            answer[i] = x.get(i);
+        if(stk.size() == 0) {
+            System.out.println(Arrays.toString(new int[]{-1}));
+        } else {
+            int[] answer = new int[stk.size()];
+
+            for (int i=0; i < stk.size(); i++) {
+                answer[i] = stk.get(i);
+            }
+            System.out.println(Arrays.toString(answer));
         }
-        System.out.println(Arrays.toString(answer));
     }
 }
 /*
 문제 설명
 
-아무 원소도 들어있지 않은 빈 배열 X가 있습니다.
+0과 1로만 이루어진 정수 배열 arr가 주어집니다.
+arr를 이용해 새로운 배열 stk을 만드려고 합니다.
 
-길이가 같은 정수 배열 arr과 boolean 배열 flag가 매개변수로 주어질 때,
-flag를 차례대로 순회하며
+i의 초기값을 0으로 설정하고
+i가 arr의 길이보다 작으면 다음을 반복합니다.
 
-flag[i]가 true라면
-X의 뒤에 arr[i]를 arr[i] × 2번 추가하고,
+1. 만약 stk이 빈 배열이라면
+   arr[i]를 stk에 추가하고 i에 1을 더합니다.
 
-flag[i]가 false라면
-X에서 마지막 arr[i]개의 원소를 제거한 뒤
+2. stk에 원소가 있고,
+   stk의 마지막 원소가 arr[i]와 같으면
+   stk의 마지막 원소를 제거하고 i에 1을 더합니다.
 
-X를 return 하는 solution 함수를 작성해 주세요.
+3. stk에 원소가 있는데
+   stk의 마지막 원소가 arr[i]와 다르면
+   stk의 맨 마지막에 arr[i]를 추가하고 i에 1을 더합니다.
+
+위 작업을 마친 후 만들어진 stk을 return 합니다.
+
+단, 마지막 stk이 빈 배열이라면
+[-1]을 return 합니다.
 
 
 제한사항
 
-- 1 ≤ arr의 길이 = flag의 길이 ≤ 100
-- arr의 모든 원소는 1 이상 9 이하의 정수입니다.
-- 현재 X의 길이보다 더 많은 원소를 빼는 입력은 주어지지 않습니다.
+- 1 ≤ arr의 길이 ≤ 1,000,000
+- arr의 원소는 0 또는 1 입니다.
 
 
 입출력 예
 
-arr
-[3, 2, 4, 1, 3]
+arr = [0, 1, 1, 1, 0]
+result = [0, 1, 0]
 
-flag
-[true, false, true, false, false]
+arr = [0, 1, 0, 1, 0]
+result = [0, 1, 0, 1, 0]
 
-result
-[3, 3, 3, 3, 4, 4, 4, 4]
-
-
-입출력 예 설명
-
-처음 X = []
-
-i = 0
-flag[0] = true
-arr[0] = 3
-
-3을 3 × 2 = 6번 추가
-
-X = [3, 3, 3, 3, 3, 3]
+arr = [0, 1, 1, 0]
+result = [-1]
 
 
-i = 1
-flag[1] = false
-arr[1] = 2
+예시 1
 
-마지막 원소 2개 제거
+arr = [0, 1, 1, 1, 0]
 
-X = [3, 3, 3, 3]
+stk = []
 
+0 추가
+stk = [0]
 
-i = 2
-flag[2] = true
-arr[2] = 4
+1은 마지막 값 0과 다름
+stk = [0, 1]
 
-4를 4 × 2 = 8번 추가
+1은 마지막 값 1과 같음
+마지막 1 삭제
+stk = [0]
 
-X = [3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4]
+1은 마지막 값 0과 다름
+stk = [0, 1]
 
-
-i = 3
-flag[3] = false
-arr[3] = 1
-
-마지막 원소 1개 제거
-
-X = [3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4]
-
-
-i = 4
-flag[4] = false
-arr[4] = 3
-
-마지막 원소 3개 제거
-
-X = [3, 3, 3, 3, 4, 4, 4, 4]
-
+0은 마지막 값 1과 다름
+stk = [0, 1, 0]
 
 따라서
+[0, 1, 0] return
 
-[3, 3, 3, 3, 4, 4, 4, 4]
 
-를 return 합니다.
+예시 3
+
+arr = [0, 1, 1, 0]
+
+stk = []
+
+0 추가
+[0]
+
+1 추가
+[0, 1]
+
+마지막 값 1과 현재 값 1이 같으므로 삭제
+[0]
+
+마지막 값 0과 현재 값 0이 같으므로 삭제
+[]
+
+최종 stk이 빈 배열이므로
+[-1] return
 */
